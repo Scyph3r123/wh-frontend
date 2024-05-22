@@ -1,0 +1,13 @@
+html {
+    @apply bg-black text-gray-200 font-poppins antialiased font-normal leading-tight
+}
+html::-webkit-scrollbar {
+    display: none;
+}
+html {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+section {
+    @apply px-4 sm:px-8 min-h-screen
+}

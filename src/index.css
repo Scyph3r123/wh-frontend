@@ -1,3 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import './styles/font.css';
+@import './styles/tailwind.css';
+@import './styles/global.css';
+@import './styles/typography.css';
+@import './styles/navlink.css';
+@import './styles/social-icons.css';
