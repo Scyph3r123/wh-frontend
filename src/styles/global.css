@@ -11,3 +11,6 @@ html {
 section {
     @apply px-4 sm:px-8 min-h-screen
 }
+.bg-pattern {
+    background: repeating-linear-gradient(rgba(0,0,0,1), rgba(0,0,0,1) 1px, rgba(0,0,0,0.4) 1px, rgba(0,0,0,0.4) 2px);
+}

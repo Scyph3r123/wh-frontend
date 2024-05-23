@@ -5,16 +5,16 @@ const MobileMenu = (setMenu) => {
   return (
     <div className='fixed inset-0 bg-white flex text-black z-40'>
         <div className="text-center m-auto flex flex-col text-6xl">
-            <Link to="/" className='uppercase' data-char="Home" onClick={()=>{setMenu(false)}}>
+            <Link to="/" className='nav-link' data-char="Home" onClick={()=>{setMenu(false)}}>
                 <span>Home</span>
             </Link>
-            <Link to="/about" className='uppercase' data-char="About Us" onClick={()=>{setMenu(false)}}>
+            <Link to="/about" className='nav-link' data-char="About Us" onClick={()=>{setMenu(false)}}>
                 <span>About Us</span>
             </Link>
-            <Link to="/projects" className='uppercase' data-char="Projects" onClick={()=>{setMenu(false)}}>
+            <Link to="/projects" className='nav-link' data-char="Projects" onClick={()=>{setMenu(false)}}>
                 <span>Projects</span>
             </Link>
-            <Link to="/contact" className='uppercase' data-char="Contact" onClick={()=>{setMenu(false)}}>
+            <Link to="/contact" className='nav-link' data-char="Contact" onClick={()=>{setMenu(false)}}>
                 <span>Contact</span>
             </Link>
         </div>

@@ -5,10 +5,20 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: 'auto',
+          }
+        }
+      }
+    },
     fontFamily: {
       'poppins' : ['Poppins', 'sans-serif']
     }
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 }

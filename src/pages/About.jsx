@@ -1,84 +1,98 @@
+import { gql, useQuery } from '@apollo/client'
 import { ChevronDown, Clapperboard, Facebook, Instagram, Mouse, Twitter } from 'lucide-react'
 import React from 'react'
+import { BlocksRenderer } from '@strapi/blocks-react-renderer'
+
+const GETABOUT = gql`
+    query GetAboutAndTeams {
+        about {
+            data {
+                id
+                attributes {
+                    Description
+                    Background {
+                        data {
+                            attributes {
+                                formats
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        teams {
+            data {
+                id
+                attributes {
+                    fullname
+                    image {
+                        data {
+                            id
+                            attributes {
+                                formats
+                            }
+                        }
+                    }
+                    bio
+                }
+            }
+        }
+    }
+`
 
 const About = () => {
-  return (
+    const { loading, error, data } = useQuery(GETABOUT)
+
+    if (loading) return 'Loading...'
+    if (error) return `Error! ${error.message}`
+
+    const backgroundImage = `http://localhost:1337${data.about.data.attributes.Background.data.attributes.formats.large.url}`
+
+
+    return (
     <>
-        <section className='pt-40 pb-20 min-h-screen flex flex-col'>
-            <div className="lg:w-1/2 mx-auto">
-                <h2 className='mb-10'>About <br /> Us <Clapperboard size={68} strokeWidth={1} className='inline'/></h2>
-                <div className="space-y-5 text-xl mb-10">
-                    <p className=''>Winter Hymns, born in 2018 from the aspirations of a passionate and creative collective, is a production company on a mission to share compelling stories with a global audience. While our primary focus currently revolves around crafting captivating short films, our ambitions extend to the creation of feature films in the near future.</p>
-                    <p>Our journey has been marked by recognition and acclaim, with our short films earning coveted slots at prestigious film festivals worldwide, including the International Film Festival of Rotterdam, the Clermont-Ferrand International Film Festival, the Melbourne International Film Festival, and the Palm Springs International ShortFest.</p>
-                    <p>Although we find our roots in the vibrant culture of the North East of India, we've also ventured into the realm of international productions, showcasing our adaptability and ability to resonate with diverse audiences around the globe. At Winter Hymns, we are driven by a passion for storytelling and a commitment to sharing our narratives with the world.</p>
+        
+        <section className="relative pt-40 pb-20 min-h-screen flex flex-col overflow-hidden bg-cover bg-center" style={{ backgroundImage: `url(${backgroundImage})` }}>
+            <div className="lg:w-2/3 xl:w-1/2 static z-10 mt-auto">
+                <h3 className='mb-5'>About Us</h3>
+                <div className="space-y-5 mb-10 prose prose-white prose-headings:underline prose-invert">
+                    <BlocksRenderer content={[ ...data.about.data.attributes.Description ]} />
                 </div>
             </div>
-            <div className="mt-auto">
-                <div className="grid grid-cols-3 items-end">
+            <div className="mt-auto static z-10">
+                <div className="grid grid-cols-1 lg:grid-cols-3 items-end">
                     <div className="text-sm">
                     </div>
-                    <div className="text-center">
-                        <span className="text-xs uppercase">Scroll Down</span> <br />
+                    <div className="text-center hidden lg:block group">
+                        <span className="text-xs uppercase group-hover:animate-pulse group-hover:opacity-100 opacity-0">Scroll Down</span> <br />
                         <Mouse className='text-white text-opacity-40 inline-block' size={40} strokeWidth={1} />
                     </div>
                 </div>
             </div>
+            <div className="absolute inset-0 bg-black bg-opacity-80 z-0"></div>
         </section>
-        <section className="">
+        <section className=" pt-40">
             <h6 className='mb-5'>The Team <ChevronDown className='inline' size={24}/></h6>
-            <div className="grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-0">
-                <div className='h-[600px] md:h-[400px] xl:h-[800px] overflow-hidden relative group'>
-                    <img src="https://picsum.photos/id/106/500/700" alt="" className='object-cover w-full h-full' />
-                    <div className="absolute inset-0 bg-black group-hover:translate-x-0 -translate-x-full transition-transform ease-out duration-700"></div>
-                    <div className="absolute bottom-0 left-0 m-10">
-                        <h6 className='mb-5 transition-all translate-y-10 group-hover:translate-y-0 delay-100 group-hover:opacity-100 opacity-0 duration-500'>Theja Rio</h6>
-                        <div className="flex items-center space-x-2 transition-all translate-y-10 group-hover:translate-y-0 group-hover:opacity-100 opacity-0 duration-500">
-                            <a href="" className='p-2'><Facebook/></a>
-                            <a href="" className='p-2'><Instagram/></a>
-                            <a href="" className='p-2'><Twitter/></a>
+            <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-0">
+                {data.teams.data.map((team) => (
+                    <div key={team.id} className='h-[600px] md:h-[500px] lg:h-[400px] xl:h-[800px] overflow-hidden relative group'>
+                        <img src={`http://localhost:1337${team.attributes.image.data.attributes.formats.small.url}`} alt="" className='object-cover w-full h-full grayscale' />
+                        <div className="absolute inset-0 bg-black group-hover:translate-x-0 -translate-x-full transition-transform ease-out duration-700"></div>
+                        <div className="absolute bottom-0 left-0 m-10">
+                            <h6 className='mb-5 transition-all translate-y-10 group-hover:translate-y-0 group-hover:opacity-100 opacity-0 duration-600'>{team.attributes.fullname}</h6>
+                            <p className='mb-5 transition-all translate-y-10 group-hover:translate-y-0 group-hover:opacity-100 opacity-0 duration-500'>{team.attributes.bio}</p>
+                            <div className="flex items-center space-x-2 transition-all translate-y-10 group-hover:translate-y-0 group-hover:opacity-100 opacity-0 duration-300">
+                                <a href="" className='p-2'><Facebook/></a>
+                                <a href="" className='p-2'><Instagram/></a>
+                                <a href="" className='p-2'><Twitter/></a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className='h-[600px] md:h-[400px] xl:h-[800px] overflow-hidden relative group'>
-                    <img src="https://picsum.photos/id/102/500/700" alt="" className='object-cover w-full h-full' />
-                    <div className="absolute inset-0 bg-black group-hover:translate-x-0 -translate-x-full transition-transform ease-out duration-700"></div>
-                    <div className="absolute bottom-0 left-0 m-10">
-                        <h6 className='mb-5 transition-all translate-y-10 group-hover:translate-y-0 delay-100 group-hover:opacity-100 opacity-0 duration-500'>Dan Pusa</h6>
-                        <div className="flex items-center space-x-2 transition-all translate-y-10 group-hover:translate-y-0 group-hover:opacity-100 opacity-0 duration-500">
-                            <a href="" className='p-2'><Facebook/></a>
-                            <a href="" className='p-2'><Instagram/></a>
-                            <a href="" className='p-2'><Twitter/></a>
-                        </div>
-                    </div>
-                </div>
-                <div className='h-[600px] md:h-[400px] xl:h-[800px] overflow-hidden relative group'>
-                    <img src="https://picsum.photos/id/104/500/700" alt="" className='object-cover w-full h-full' />
-                    <div className="absolute inset-0 bg-black group-hover:translate-x-0 -translate-x-full transition-transform ease-out duration-700"></div>
-                    <div className="absolute bottom-0 left-0 m-10">
-                        <h6 className='mb-5 transition-all translate-y-10 group-hover:translate-y-0 delay-100 group-hover:opacity-100 opacity-0 duration-500'>Kechavor Theunuo</h6>
-                        <div className="flex items-center space-x-2 transition-all translate-y-10 group-hover:translate-y-0 group-hover:opacity-100 opacity-0 duration-500">
-                            <a href="" className='p-2'><Facebook/></a>
-                            <a href="" className='p-2'><Instagram/></a>
-                            <a href="" className='p-2'><Twitter/></a>
-                        </div>
-                    </div>
-                </div>
-                <div className='h-[600px] md:h-[400px] xl:h-[800px] overflow-hidden relative group'>
-                    <img src="https://picsum.photos/id/103/500/700" alt="" className='object-cover w-full h-full' />
-                    <div className="absolute inset-0 bg-black group-hover:translate-x-0 -translate-x-full transition-transform ease-out duration-700"></div>
-                    <div className="absolute bottom-0 left-0 m-10">
-                        <h6 className='mb-5 transition-all translate-y-10 group-hover:translate-y-0 delay-100 group-hover:opacity-100 opacity-0 duration-500'>Lima Longchari</h6>
-                        <div className="flex items-center space-x-2 transition-all translate-y-10 group-hover:translate-y-0 group-hover:opacity-100 opacity-0 duration-500">
-                            <a href="" className='p-2'><Facebook/></a>
-                            <a href="" className='p-2'><Instagram/></a>
-                            <a href="" className='p-2'><Twitter/></a>
-                        </div>
-                    </div>
-                </div>
+                ))}
             </div>
         </section>
     </>
-  )
+    )
 }
 
 export default About

@@ -8,14 +8,16 @@ const Header = () => {
 
     return (
         <div>
-            <div className="fixed inset-x-0 top-0 flex items-start p-8 z-50 mix-blend-difference text-gray-300">
-                <div className='font-semibold sm:text-[60px] text-[30px] leading-[0.8] uppercase cursor-none'>
+            <div className="fixed inset-x-0 top-0 flex items-start px-4 md:px-8 pt-5 md:pt-8 z-50 mix-blend-difference text-gray-300">
+                <div className='font-semibold lg:text-[60px] text-[30px] leading-[0.8] uppercase cursor-default'>
                     Winter <br /> Hymns <span className='text-xs'>F i l m s</span>
                 </div>
                 <div className="lg:hidden ml-auto">
-                    <button onClick={()=> setMenu(!menu)}>Menu</button>
+                    <button onClick={()=> setMenu(!menu)} className='p-3'>
+                        {menu ? 'Close' : 'Menu'}
+                    </button>
                 </div>
-                <div className='lg:flex items-center space-x-5 ml-auto hidden'>
+                <div className='lg:flex items-center space-x-5 ml-auto hidden text-sm'>
                     <Link to="/" className='nav-link' data-char="Home">
                         <span>Home</span>
                     </Link>

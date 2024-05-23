@@ -18,14 +18,6 @@ const Contact = () => {
                     </div>
                 </div>
             </div>
-
-            <div className="absolute inset-x-0 bottom-0 m-10 text-xs">
-                <div className="grid grid-cols-3 items-end">
-                <div className="">© 2024</div>
-                <div className="text-center uppercase">Winter Hymns</div>
-                <div className="text-right uppercase">All Rights Reserved</div>
-                </div>
-            </div>
         </section>
     )
 }

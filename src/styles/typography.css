@@ -2,20 +2,20 @@ h1,h2,h3,h4,h5,h6 {
     @apply leading-[0.8] tracking-tight uppercase font-semibold
 }
 h1 {
-    @apply  md:text-[7.993rem];
+    @apply text-[3.815rem] md:text-[5.61rem] xl:text-[7.993rem];
 }
 h2 {
-    @apply  md:text-[5.653rem];
+    @apply text-[3.052rem] md:text-[4.209rem] xl:text-[5.653rem];
 }
 h3 {
-    @apply  md:text-[3.998rem];
+    @apply text-[2.441rem] md:text-[3.157rem] xl:text-[3.998rem];
 }
 h4 {
-    @apply  md:text-[2.827rem];
+    @apply text-[1.953rem] md:text-[2.369rem] xl:text-[2.827rem];
 }
 h5 {
-    @apply  md:text-[1.999rem];
+    @apply text-[1.563rem] md:text-[1.777rem] xl:text-[1.999rem];
 }
 h6 {
-    @apply  md:text-[1.414rem];
+    @apply text-[1.25rem] md:text-[1.333rem] xl:text-[1.414rem];
 }
