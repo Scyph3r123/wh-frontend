@@ -17,17 +17,17 @@ const Header = () => {
                         {menu ? 'Close' : 'Menu'}
                     </button>
                 </div>
-                <div className='lg:flex items-center space-x-5 ml-auto hidden text-sm'>
-                    <Link to="/" className='nav-link' data-char="Home">
+                <div className='lg:flex items-center space-x-2 ml-auto hidden text-sm leading-none'>
+                    <Link to="/" className='nav-link border-8 border-transparent' data-char="Home">
                         <span>Home</span>
                     </Link>
-                    <Link to="/about" className='nav-link' data-char="About Us">
+                    <Link to="/about" className='nav-link border-8 border-transparent' data-char="About Us">
                         <span>About Us</span>
                     </Link>
-                    <Link to="/projects" className='nav-link' data-char="Projects">
+                    <Link to="/projects" className='nav-link border-8 border-transparent' data-char="Projects">
                         <span>Projects</span>
                     </Link>
-                    <Link to="/contact" className='nav-link' data-char="Contact">
+                    <Link to="/contact" className='nav-link border-8 border-transparent' data-char="Contact">
                         <span>Contact</span>
                     </Link>
                 </div>

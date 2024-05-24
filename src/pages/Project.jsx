@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client'
 import { BlocksRenderer } from '@strapi/blocks-react-renderer'
-import { ChevronDown } from 'lucide-react'
+import { Calendar, ChevronDown, Focus } from 'lucide-react'
 import React from 'react'
 import { Link, useParams } from 'react-router-dom'
 import Zoom from 'react-medium-image-zoom'
@@ -15,7 +15,22 @@ const GETPROJECT = gql`
                 attributes {
                     title
                     year
+                    lens
                     description
+                    addAwards {
+                        id
+                        Title
+                        description
+                        year
+                        Logo {
+                            data {
+                                attributes {
+                                    url
+                                    formats
+                                }
+                            }
+                        }
+                    }
                     featured_image {
                         data {
                             attributes {
@@ -69,15 +84,30 @@ const Project = () => {
                 <div className="absolute inset-0 bg-pattern z-0 opacity-50"></div>
             </section>
             <section className='py-40'>
-                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-10">
-                    <div className="space-y-5">
+                <div className=" max-w-screen-lg mx-auto">
+                    <div className="space-y-5 mb-10">
                         <h5>{data.project.data.attributes.title}</h5>
-                        <p>{data.project.data.attributes.year}</p>
-                        <div className="prose prose-invert block">
+                        <div className='space-y-2 text-gray-400 cursor-default'>
+                            <div><Calendar width={16} height={16} className='inline mr-2'/>{data.project.data.attributes.year}</div>
+                            <div><Focus width={16} height={16} className='inline mr-2'/>{data.project.data.attributes.lens}</div>
+                        </div>
+                        <div className="prose prose-invert bloc">
                             <BlocksRenderer content={[ ...data.project.data.attributes.description ]}/>
                         </div>
                     </div>
-                    <div className="xl:col-span-2 gap-5 grid">
+                    {data.project.data.attributes.addAwards && (
+                        <div className='p-3 mb-10 grid gap-5 lg:grid-cols-3 grid-cols-1 sm:grid-cols-2'>
+                            {data.project.data.attributes.addAwards.map((award) => (
+                                <div key={award.id} className='p-5 bg-zinc-900 space-y-2'>
+                                    <img src={`http://localhost:1337${award.Logo.data.attributes.url}`} alt={award.Logo.data.attributes.title} className='mb-5' />
+                                    <p>{award.Title}</p>
+                                    <p className='text-xs'>{award.year}</p>
+                                    <p className='text-xs text-gray-300'>{award.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    <div className="space-y-5">
                         {data.project.data.attributes.gallery.data.map((image)=>(
                             <Zoom classDialog="custom-zoom" key={image.id}>
                                 <picture className='flex justify-end'>
@@ -85,7 +115,7 @@ const Project = () => {
                                     <source media='(max-width: 720px)' srcSet={`http://localhost:1337${image.attributes.formats.medium.url}`}/>
                                     <img
                                         alt=""
-                                        src={`http://localhost:1337${image.attributes.formats.medium.url}`}
+                                        src={`http://localhost:1337${image.attributes.url}`}
                                     />
                                 </picture>
                             </Zoom>
@@ -97,10 +127,10 @@ const Project = () => {
                 <div className="my-auto">
                     <h6 className='mb-5'>More Projects <ChevronDown className='inline' size={24}/></h6>
                     <div className="flex flex-col justify-center items-start space-y-5">
-                        {data.projects.data.map((project) => (
-                            <h3 className='hover:underline' key={project.id}>
-                                <Link to={`/projects/${project.id}`} key={project.id} className='nav-link' data-char={`${project.attributes.title}`}>
-                                    <span>{project.attributes.title}</span>
+                        {data.projects.data.map((single_project) => (
+                            <h3 className='hover:underline' key={single_project.id}>
+                                <Link to={`/projects/${single_project.id}`} key={single_project.id} className='nav-link' data-char={`${single_project.attributes.title}`}>
+                                    <span>{single_project.attributes.title}</span>
                                 </Link>
                             </h3>
                         ))}

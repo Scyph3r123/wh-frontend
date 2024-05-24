@@ -74,27 +74,29 @@ const Projects = () => {
                 <div className="absolute inset-0 bg-black bg-opacity-60 z-0"></div>
             </section>
             <section className="py-40">
-                <div className="sm:w-1/2 xl:w-1/3 mb-16">
-                    <p className='text-gray-300'>{data.projectPage.data.attributes.description}</p>
-                </div>
-                <div className="grid gap-5 grid-cols-1 sm:grid-cols-2">
-                    {data.projects.data.map((project) => (
-                        <Link key={project.id} to={`/projects/${project.id}`} className='h-[500px] lg:h-[800px] overflow-hidden group relative'>
-                            <img src={`http://localhost:1337${project.attributes.featured_image.data.attributes.formats.medium.url}`} alt="Project image" className='object-cover w-full h-full group-hover:scale-[1.2] hover:grayscale-0 duration-1000 grayscale' />
-                            <div className="absolute top-0 inset-x-0 m-10">
-                                <div className="flex justify-between uppercase font-medium">
-                                    <p>{project.attributes.title}</p>
-                                    <p><Focus className='inline' size={18}/> {project.attributes.lens}</p>
+                <div className="max-w-screen-2xl mx-auto">
+                    <div className="sm:w-1/2 xl:w-1/3 mb-16">
+                        <p className='text-gray-300'>{data.projectPage.data.attributes.description}</p>
+                    </div>
+                    <div className="grid gap-5 grid-cols-1 xl:grid-cols-2">
+                        {data.projects.data.map((project) => (
+                            <Link key={project.id} to={`/projects/${project.id}`} className='aspect-video overflow-hidden group relative'>
+                                <img src={`http://localhost:1337${project.attributes.featured_image.data.attributes.formats.medium.url}`} alt="Project image" className='object-cover w-full h-full group-hover:scale-[1.2] hover:grayscale-0 duration-1000 grayscale' />
+                                <div className="absolute top-0 inset-x-0 m-10">
+                                    <div className="flex justify-between uppercase font-medium">
+                                        <p>{project.attributes.title}</p>
+                                        <p><Focus className='inline' size={18}/> {project.attributes.lens}</p>
+                                    </div>
                                 </div>
-                            </div>
+                            </Link>
+                        ))}
+                    </div>
+                    {/* <div className="text-center mt-10">
+                        <Link to="/" className="nav-link" data-char="More Projects">
+                            <span>More Projects</span>
                         </Link>
-                    ))}
+                    </div> */}
                 </div>
-                {/* <div className="text-center mt-10">
-                    <Link to="/" className="nav-link" data-char="More Projects">
-                        <span>More Projects</span>
-                    </Link>
-                </div> */}
             </section>
         </>
     )
