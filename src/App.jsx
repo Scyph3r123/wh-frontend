@@ -9,7 +9,7 @@ import Project from "./pages/Project"
 import Footer from "./components/Footer"
 
 const client = new ApolloClient({
-  uri: 'http://localhost:1337/graphql',
+  uri: import.meta.env.VITE_GRAPHQL_URI,
   cache: new InMemoryCache(),
 })
 

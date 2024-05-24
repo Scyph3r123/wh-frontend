@@ -2,6 +2,7 @@ import { gql, useQuery } from '@apollo/client'
 import { ChevronDown, Clapperboard, Facebook, Instagram, Mouse, Twitter } from 'lucide-react'
 import React from 'react'
 import { BlocksRenderer } from '@strapi/blocks-react-renderer'
+import WaitScreen from '../components/WaitScreen'
 
 const GETABOUT = gql`
     query GetAboutAndTeams {
@@ -43,11 +44,10 @@ const GETABOUT = gql`
 const About = () => {
     const { loading, error, data } = useQuery(GETABOUT)
 
-    if (loading) return 'Loading...'
-    if (error) return `Error! ${error.message}`
+    if (loading) return <WaitScreen loading={loading}/>
+    if (error) return <WaitScreen error={error}/>
 
     const backgroundImage = `http://localhost:1337${data.about.data.attributes.Background.data.attributes.formats.large.url}`
-
 
     return (
     <>

@@ -1,6 +1,7 @@
 import { gql, useQuery } from '@apollo/client';
 import { Focus, Mouse, Tag } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import WaitScreen from '../components/WaitScreen';
 
 
 const GET_PROJECTS = gql`
@@ -51,8 +52,9 @@ const GET_PROJECTS = gql`
 const Projects = () => {
     const { loading, error, data } = useQuery(GET_PROJECTS)
 
-    if (loading) return 'Loading...'
-    if (error) return `Error! ${error.message}`
+    if (loading) return <WaitScreen loading={loading}/>
+    if (error) return <WaitScreen error={error}/>
+
     const backgroundImage = `http://localhost:1337${data.projectPage.data.attributes.background.data.attributes.formats.large.url}`
 
     return (

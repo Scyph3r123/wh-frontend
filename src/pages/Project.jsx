@@ -5,6 +5,7 @@ import React from 'react'
 import { Link, useParams } from 'react-router-dom'
 import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
+import WaitScreen from '../components/WaitScreen'
 
 const GETPROJECT = gql`
     query getProject($projectId : ID) {
@@ -54,8 +55,8 @@ const Project = () => {
         }
     })
 
-    if (loading) return 'Loading...'
-    if (error) return `Error! ${error.message}`
+    if (loading) return <WaitScreen loading={loading}/>
+    if (error) return <WaitScreen error={error}/>
 
     const backgroundImage = `http://localhost:1337${data.project.data.attributes.featured_image.data.attributes.formats.large.url}`
 
@@ -80,10 +81,11 @@ const Project = () => {
                         {data.project.data.attributes.gallery.data.map((image)=>(
                             <Zoom classDialog="custom-zoom" key={image.id}>
                                 <picture className='flex justify-end'>
-                                    <source media='(max-width: 1200px)' srcSet={`http://localhost:1337${image.attributes.url}`}/>
+                                    <source media='(max-width: 1920px)' srcSet={`http://localhost:1337${image.attributes.formats.large.url}`}/>
+                                    <source media='(max-width: 720px)' srcSet={`http://localhost:1337${image.attributes.formats.medium.url}`}/>
                                     <img
                                         alt=""
-                                        src={`http://localhost:1337${image.attributes.formats.large.url}`}
+                                        src={`http://localhost:1337${image.attributes.formats.medium.url}`}
                                     />
                                 </picture>
                             </Zoom>
