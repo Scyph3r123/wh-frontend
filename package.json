@@ -14,7 +14,7 @@
     "@strapi/blocks-react-renderer": "^1.0.1",
     "alpinejs": "^3.14.0",
     "dotenv": "^16.4.5",
-    "framer-motion": "^11.0.4",
+    "framer-motion": "^11.2.6",
     "graphql": "^16.8.1",
     "lucide-react": "^0.379.0",
     "react": "^18.3.1",

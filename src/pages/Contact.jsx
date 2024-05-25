@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Youtube, Mail, Send } from 'lucide-react'
+import { Facebook, Instagram, Youtube } from 'lucide-react'
 import React from 'react'
 
 const Contact = () => {

@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import { Focus, Mouse, Tag } from 'lucide-react'
+import { Focus, Mouse } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import WaitScreen from '../components/WaitScreen';
 

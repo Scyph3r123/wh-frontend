@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client'
-import { ChevronDown, Clapperboard, Facebook, Instagram, Mouse, Twitter } from 'lucide-react'
+import { ChevronDown, Facebook, Instagram, Mouse, Twitter } from 'lucide-react'
 import React from 'react'
 import { BlocksRenderer } from '@strapi/blocks-react-renderer'
 import WaitScreen from '../components/WaitScreen'
