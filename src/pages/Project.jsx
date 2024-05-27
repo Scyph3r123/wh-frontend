@@ -1,11 +1,12 @@
 import { gql, useQuery } from '@apollo/client'
 import { BlocksRenderer } from '@strapi/blocks-react-renderer'
-import { Calendar, ChevronDown, Focus } from 'lucide-react'
-import React from 'react'
+import { ArrowBigDown, ArrowDown, Calendar, ChevronDown, Focus, Mouse } from 'lucide-react'
+import React, { useRef } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
 import WaitScreen from '../components/WaitScreen'
+import { motion, useScroll, useTransform } from 'framer-motion'
 
 const GETPROJECT = gql`
     query getProject($projectId : ID) {
@@ -62,6 +63,15 @@ const GETPROJECT = gql`
 `
 
 const Project = () => {
+    
+    const ref = useRef(null)
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["start start", "end start"]
+    })
+    const scrollBg = useTransform(scrollYProgress, [0, 1], ['0%', '25%'])
+
+
     const { id } = useParams()
 
     const { loading, error, data } = useQuery(GETPROJECT, {
@@ -77,11 +87,34 @@ const Project = () => {
 
     return (
         <>
-            <section className='min-h-screen flex flex-col bg-cover bg-center' style={{ backgroundImage: `url(${backgroundImage})` }}>
-                <div className="m-auto static z-10">
-                    <h2 className='mb-5 text-center'>{data.project.data.attributes.title}</h2>
+            <section ref={ref} className='relative min-h-screen flex pb-10 overflow-hidden'>
+                <motion.div className="absolute inset-0 z-0 bg-cover bg-center" style={{ y : scrollBg, backgroundImage: `url(${backgroundImage})` }} />
+                <div className="m-auto z-20">
+                    <h2 className='overflow-hidden'>
+                        <motion.div
+                            initial={{y : 100}}
+                            animate={{y : 0,
+                                transition : { 
+                                    delay: 0.5,
+                                    duration: 0.3
+                                }
+                            }}                            >
+                            {data.project.data.attributes.title}
+                        </motion.div>
+                    </h2>
                 </div>
-                <div className="absolute inset-0 bg-pattern z-0 opacity-50"></div>
+                <div className="absolute inset-x-0 bottom-0 m-10 z-20">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 items-end">
+                        <div className="">
+                        </div>
+                        <div className="text-center hidden lg:block group relative ">
+                            <Mouse className='text-white inline-block group-hover:-translate-y-5 transition-transform' size={40} strokeWidth={1} />
+                            <div className='absolute inset-0 group-hover:translate-y-5 transition-transform'>
+                                <ArrowDown className='group-hover:opacity-100 opacity-0 inline-block' size={20} strokeWidth={1} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
             <section className='py-40'>
                 <div className=" max-w-screen-lg mx-auto">

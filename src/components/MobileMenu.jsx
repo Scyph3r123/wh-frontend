@@ -5,11 +5,11 @@ import { stagger, useAnimate, motion, animate, delay } from 'framer-motion'
 
 const menuVariant = {
     initial : {
-        x: 100,
+        y: 100,
         opacity : 0
     },
     enter : {
-        x: 0,
+        y: 0,
         opacity : 1,
         transition : {
             duration: 0.4,
@@ -29,11 +29,11 @@ const menuVariant = {
 const listVariants = {
     initial: {
         opacity: 0,
-        x: 100,
+        y: 100,
     },
     enter: {
         opacity: 1,
-        x: 0,
+        y: 0,
         transition: {
             duration : 0.4
         }

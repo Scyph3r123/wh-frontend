@@ -1,0 +1,9 @@
+.input {
+    @apply block w-full content-center text-base py-2 border-b border-gray-500 focus:outline-none focus:border-white bg-black placeholder:text-gray-500
+}
+.textarea {
+    @apply block w-full content-center text-base py-2 border-b border-gray-500 focus:outline-none focus:border-white bg-black placeholder:text-gray-500
+}
+.label {
+    @apply uppercase block mb-1 text-xs
+}
