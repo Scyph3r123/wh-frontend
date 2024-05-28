@@ -1,7 +1,6 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
 import React, { useState } from 'react'
 import WaitScreen from '../components/WaitScreen'
-import SocialLinks from '../constants/SocialLinks'
 
 
 const GETCONTACTPAGE = gql`
@@ -22,14 +21,17 @@ const GETCONTACTPAGE = gql`
     }
 `
 const CREATE_CONTACT_FORM = gql`
-  mutation CreateContactForm($input: createContactFormInput!) {
-        createContactForm(input: $input) {
-            contactForm {
+  mutation CreateContactForm($data: MessageInput!) {
+    createMessage(data: $data) {
+            data {
                 id
-                name
-                email
-                subject
-                message
+                attributes {
+                    id
+                    name
+                    email
+                    subject
+                    message
+                }
             }
         }
     }
@@ -37,15 +39,8 @@ const CREATE_CONTACT_FORM = gql`
 
 const Contact = () => {
     const { loading, error, data } = useQuery(GETCONTACTPAGE)
-    
-    if (loading) return <WaitScreen loading={loading}/>
-    if (error) return <WaitScreen error={error}/>
-
-    const backgroundImage = `http://localhost:1337${data.contactPage.data.attributes.background.data.attributes.formats.large.url}`
-
     const [createContactForm] = useMutation(CREATE_CONTACT_FORM)
-    
-    const [ formDate, setFormData ] = useState({
+    const [ formData, setFormData ] = useState({
         name : '',
         email : '',
         subject: '',
@@ -58,23 +53,33 @@ const Contact = () => {
             [e.target.name]: e.target.value
         })
     }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         try {
         const { data } = await createContactForm({
             variables: {
-            input: {
-                data: formData,
-            },
+                input: {
+                    data: formData,
+                },
             },
         });
             console.log('Form submitted successfully:', data);
-        // Reset form or show success message
+            // Reset form or show success message
         } catch (error) {
             console.error('Error submitting form:', error);
-        // Show error message
+            // Show error message
         }
-    };
+    }
+
+    if (loading) return <WaitScreen loading={loading}/>
+    if (error) return <WaitScreen error={error}/>
+
+    const backgroundImage = data?.contactPage ? `http://localhost:1337${data.contactPage.data.attributes.background.data.attributes.formats.large.url}` : ''
+
+    
+    
 
     return (
         <div className='min-h-screen grid md:grid-cols-2'>
@@ -99,7 +104,7 @@ const Contact = () => {
                             </div>
                             <div className='col-span-full'>
                                 <label htmlFor="email" className='label'>Message</label>
-                                <textarea name='message' type="text" className='textarea' placeholder='Write a message...' rows={5} cols={5} value={formData.subject} onChange={handleChange}></textarea>
+                                <textarea name='message' className='textarea' placeholder='Write a message...' rows={5} cols={5} value={formData.message} onChange={handleChange}></textarea>
                             </div>
                             <div>
                                 <button type='submit' className='px-5 py-3 border border-gray-500'>Submit</button>
