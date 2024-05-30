@@ -40,7 +40,8 @@ const Header = () => {
         <div>
             <div className={`fixed inset-x-0 flex justify-between items-center top-0 px-4 md:px-8 pt-5 md:pt-8 z-50 ${menu ? 'text-black' : 'text-white'}`}>
                 <div className='mr-20'>
-                    <Link to={'/'} className='text-[30px] leading-[0.8] uppercase'>
+                    <Link to={'/'} className='text-[22px] md:text-[30px] leading-[0.8] uppercase'>
+                        Winter Hymns
                     </Link>
                 </div>
                 <div className='ml-auto mr-10 inset-x-0 lg:flex items-center justify-center space-x-2 hidden text-sm leading-none'>

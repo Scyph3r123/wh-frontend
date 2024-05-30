@@ -107,7 +107,7 @@ const Projects = () => {
                         {data.projects.data.map((project) => (
                             <Link key={project.id} to={`/projects/${project.id}`} className='aspect-video overflow-hidden group relative'>
                                 <img src={`${apiPath}${project.attributes.featured_image.data.attributes.formats.medium.url}`} alt="Project image" className='scale-100 group-hover:scale-125 transition-transform object-cover w-full h-full duration-1000' />
-                                <div className="absolute top-0 inset-x-0 m-10">
+                                <div className="absolute top-0 inset-x-0 m-5 md:m-10">
                                     <div className="flex justify-between uppercase font-medium">
                                         <h4>{project.attributes.title}</h4>
                                         <ArrowRight size={30}/>
@@ -117,11 +117,6 @@ const Projects = () => {
                             </Link>
                         ))}
                     </div>
-                    {/* <div className="text-center mt-10">
-                        <Link to="/" className="nav-link" data-char="More Projects">
-                            <span>More Projects</span>
-                        </Link>
-                    </div> */}
                 </div>
             </section>
         </>

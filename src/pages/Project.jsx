@@ -1,12 +1,12 @@
 import { gql, useQuery } from '@apollo/client'
 import { BlocksRenderer } from '@strapi/blocks-react-renderer'
-import { ArrowBigDown, ArrowDown, Calendar, ChevronDown, Focus, Mouse } from 'lucide-react'
-import React, { useRef } from 'react'
+import { ArrowBigDown, ArrowDown, Calendar, ChevronDown, Focus, Mouse, Scale } from 'lucide-react'
+import React, { useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
 import WaitScreen from '../components/WaitScreen'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 import apiPath from '../apiPath'
 
 const GETPROJECT = gql`
@@ -18,16 +18,14 @@ const GETPROJECT = gql`
                     title
                     year
                     description
-                    project_details {
-                        director
-                        format
-                        starring
-                        producer
-                        dop
-                        editor
-                        score
-                        writer
-                    }
+                    director
+                    format
+                    starring
+                    producer
+                    dop
+                    editor
+                    score
+                    writer
                     addAwards {
                         id
                         Title
@@ -74,22 +72,18 @@ const GETPROJECT = gql`
 `
 
 const Project = () => {
-    
+    const { id } = useParams()
+    const { loading, error, data } = useQuery(GETPROJECT, {
+        variables : {
+            projectId : id
+        }
+    })
     const ref = useRef(null)
     const { scrollYProgress } = useScroll({
         target: ref,
         offset: ["start start", "end start"]
     })
     const scrollBg = useTransform(scrollYProgress, [0, 1], ['0%', '25%'])
-
-
-    const { id } = useParams()
-
-    const { loading, error, data } = useQuery(GETPROJECT, {
-        variables : {
-            projectId : id
-        }
-    })
 
     if (loading) return <WaitScreen loading={loading}/>
     if (error) return <WaitScreen error={error}/>
@@ -129,37 +123,72 @@ const Project = () => {
             </section>
             <section className='py-40'>
                 <div className=" max-w-screen-lg mx-auto">
-                    <div className="space-y-5 mb-10">
-                        <div className='space-x-4 text-gray-400 cursor-default flex items-center'>
-                            <div><Calendar width={16} height={16} className='inline mr-2'/>{data.project.data.attributes.year}</div>
-                            <div><Focus width={16} height={16} className='inline mr-2'/>{data.project.data.project_details?.format}</div>
+                    <div className="flex md:flex-row flex-col">
+                        <div className="w-full md:w-2/3 md:pr-10">
+                            <div className="prose prose-lg prose-invert">
+                                <BlocksRenderer content={[ ...data.project.data.attributes.description ]}/>
+                            </div>
                         </div>
-                        <div className="prose prose-lg prose-invert bloc">
-                            <BlocksRenderer content={[ ...data.project.data.attributes.description ]}/>
-                        </div>
-                    </div>
-                    {data.project.data.attributes?.project_details && (
-                        <div className="my-5">
-                            <dl>
-                                <dt>Director</dt>
-                                <dd>{data.project.data.attributes.project_details.director}</dd>
-                                <dt>Writer</dt>
-                                <dd>{data.project.data.attributes.project_details.writer}</dd>
-                                <dt>Producer</dt>
-                                <dd>{data.project.data.attributes.project_details.producer}</dd>
-                                <dt>DoP</dt>
-                                <dd>{data.project.data.attributes.project_details.dop}</dd>
-                                <dt>Editor</dt>
-                                <dd>{data.project.data.attributes.project_details.editor}</dd>
-                                <dt>Score</dt>
-                                <dd>{data.project.data.attributes.project_details.score}</dd>
-                                <dt>Starring</dt>
-                                <dd>{data.project.data.attributes.project_details.starring}</dd>
-                                <dt>Format</dt>
-                                <dd>{data.project.data.attributes.project_details.format}</dd>
+                        <div className="w-full md:w-1/3 my-10 md:my-0">
+                            <div className="mb-5 font-karla font-medium text-gray-200">Project Details <ChevronDown size={16} className='inline'/></div>
+                            <dl className='divide-y divide-gray-700'>
+                                {data.project.data?.attributes.year && (
+                                    <div className='flex flex-col pb-3'>
+                                        <dt className='text-gray-400 font-karla'>Year</dt>
+                                        <dd className='text-lg'>{data.project.data.attributes.year}</dd>
+                                    </div>
+                                )}
+                                {data.project.data?.attributes.director && (
+                                    <div className='flex flex-col py-3'>
+                                        <dt className='text-gray-400 font-karla'>Director</dt>
+                                        <dd className='text-lg'>{data.project.data.attributes.director}</dd>
+                                    </div>
+                                )}
+                                {data.project.data?.attributes.writer && (
+                                    <div className='flex flex-col py-3'>
+                                        <dt className='text-gray-400 font-karla'>Writer</dt>
+                                        <dd className='text-lg'>{data.project.data.attributes.writer}</dd>
+                                    </div>
+                                )}
+                                {data.project.data?.attributes.producer && (
+                                    <div className='flex flex-col py-3'>
+                                        <dt className='text-gray-400 font-karla'>Producer</dt>
+                                        <dd className='text-lg'>{data.project.data.attributes.producer}</dd>
+                                    </div>
+                                )}
+                                {data.project.data?.attributes.dop && (
+                                    <div className='flex flex-col py-3'>
+                                        <dt className='text-gray-400 font-karla'>DoP</dt>
+                                        <dd className='text-lg'>{data.project.data.attributes.dop}</dd>
+                                    </div>
+                                )}
+                                {data.project.data?.attributes.editor && (
+                                    <div className='flex flex-col py-3'>
+                                        <dt className='text-gray-400 font-karla'>Editor</dt>
+                                        <dd className='text-lg'>{data.project.data.attributes.editor}</dd>
+                                    </div>
+                                )}
+                                {data.project.data?.attributes.score && (
+                                    <div className='flex flex-col py-3'>
+                                        <dt className='text-gray-400 font-karla'>Score</dt>
+                                        <dd className='text-lg'>{data.project.data.attributes.score}</dd>
+                                    </div>
+                                )}
+                                {data.project.data?.attributes.starring && (
+                                    <div className='flex flex-col py-3'>
+                                        <dt className='text-gray-400 font-karla'>Starring</dt>
+                                        <dd className='text-lg'>{data.project.data.attributes.starring}</dd>
+                                    </div>
+                                )}
+                                {data.project.data?.attributes.format && (
+                                    <div className='flex flex-col pt-3'>
+                                        <dt className='text-gray-400 font-karla'>Format</dt>
+                                        <dd className='text-lg'>{data.project.data.attributes.format}</dd>
+                                    </div>
+                                )}
                             </dl>
                         </div>
-                    )}
+                    </div>
                     {data.project.data.attributes.addAwards && (
                         <div className='p-3 mb-10 grid gap-5 lg:grid-cols-3 grid-cols-1 sm:grid-cols-2'>
                             {data.project.data.attributes.addAwards.map((award) => (
