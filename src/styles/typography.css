@@ -1,5 +1,5 @@
 h1,h2,h3,h4,h5,h6 {
-    @apply leading-[0.8] tracking-tight uppercase font-medium
+    @apply leading-[0.8] tracking-tight uppercase font-bold font-karla
 }
 h1 {
     @apply text-[3.815rem] md:text-[5.61rem] xl:text-[7.993rem];

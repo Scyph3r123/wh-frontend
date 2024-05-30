@@ -7,3 +7,6 @@
 .label {
     @apply uppercase block mb-1 text-xs
 }
+.error {
+    @apply text-sm mt-2 text-rose-400
+}

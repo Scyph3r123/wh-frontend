@@ -2,14 +2,13 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import NavigaitonLinks from '../constants/NavigationLinks'
 import { stagger, useAnimate, motion, animate, delay } from 'framer-motion'
+import SocialLinks from '../constants/SocialLinks'
 
 const menuVariant = {
     initial : {
-        y: 100,
         opacity : 0
     },
     enter : {
-        y: 0,
         opacity : 1,
         transition : {
             duration: 0.4,
@@ -18,7 +17,6 @@ const menuVariant = {
         }
     },
     exit : {
-        y: -100,
         opacity : 0,
         transition : {
             duration: 0.5,
@@ -43,8 +41,8 @@ const listVariants = {
 const MobileMenu = ({setMenu, menu}) => {
 
     return (
-        <motion.div className='fixed inset-0 bg-white flex text-black z-40' variants={ menuVariant } initial="initial" animate="enter" exit="exit">
-            <ul className="text-center m-auto flex flex-col text-6xl">
+        <motion.div className='fixed inset-0 bg-white flex flex-col text-black z-40' variants={ menuVariant } initial="initial" animate="enter" exit="exit">
+            <ul className="text-center mt-auto flex flex-col text-6xl">
                 {NavigaitonLinks.map((link)=> (
                     <motion.li key={link.id} variants={listVariants}>
                         <Link to={link.route} className='nav-link mobile-links' data-char={link.title} onClick={()=>setMenu(false)}>
@@ -53,6 +51,15 @@ const MobileMenu = ({setMenu, menu}) => {
                     </motion.li>
                 ))}
             </ul>
+            <motion.ul initial={{opacity: 0}} animate={{opacity:1, transition:{duration:2}}} className='flex justify-center mt-auto mb-10'>
+                {SocialLinks.map((social)=>(
+                    <li key={social.id}>
+                        <a href={social.route} title={social.title} className='p-2 block'>
+                            <social.icon size={24} />
+                        </a>
+                    </li>
+                ))}
+            </motion.ul>
         </motion.div>
     )
 }

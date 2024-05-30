@@ -1,5 +1,5 @@
 html {
-    @apply bg-black text-gray-200 font-poppins antialiased font-normal leading-tight
+    @apply bg-black text-gray-200 font-spectral antialiased font-normal leading-tight
 }
 html::-webkit-scrollbar {
     display: none;

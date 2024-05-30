@@ -3,7 +3,6 @@
     overflow: hidden;
     display: inline-block;
     text-transform: uppercase;
-    font-weight: 600;
     span {
         display: inline-block;
         transition: transform .3s cubic-bezier(0.76, 0, 0.24, 1);

@@ -7,6 +7,7 @@ import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
 import WaitScreen from '../components/WaitScreen'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import apiPath from '../apiPath'
 
 const GETPROJECT = gql`
     query getProject($projectId : ID) {
@@ -16,8 +17,17 @@ const GETPROJECT = gql`
                 attributes {
                     title
                     year
-                    lens
                     description
+                    project_details {
+                        director
+                        format
+                        starring
+                        producer
+                        dop
+                        editor
+                        score
+                        writer
+                    }
                     addAwards {
                         id
                         Title
@@ -32,6 +42,7 @@ const GETPROJECT = gql`
                             }
                         }
                     }
+
                     featured_image {
                         data {
                             attributes {
@@ -83,14 +94,14 @@ const Project = () => {
     if (loading) return <WaitScreen loading={loading}/>
     if (error) return <WaitScreen error={error}/>
 
-    const backgroundImage = `http://localhost:1337${data.project.data.attributes.featured_image.data.attributes.formats.large.url}`
+    const backgroundImage = `${apiPath}${data.project.data.attributes.featured_image.data.attributes.formats.large.url}`
 
     return (
         <>
             <section ref={ref} className='relative min-h-screen flex pb-10 overflow-hidden'>
                 <motion.div className="absolute inset-0 z-0 bg-cover bg-center" style={{ y : scrollBg, backgroundImage: `url(${backgroundImage})` }} />
                 <div className="m-auto z-20">
-                    <h2 className='overflow-hidden'>
+                    <h2 className='overflow-hidden tracking-wide'>
                         <motion.div
                             initial={{y : 100}}
                             animate={{y : 0,
@@ -98,7 +109,7 @@ const Project = () => {
                                     delay: 0.5,
                                     duration: 0.3
                                 }
-                            }}                            >
+                            }}>
                             {data.project.data.attributes.title}
                         </motion.div>
                     </h2>
@@ -119,20 +130,41 @@ const Project = () => {
             <section className='py-40'>
                 <div className=" max-w-screen-lg mx-auto">
                     <div className="space-y-5 mb-10">
-                        <h5>{data.project.data.attributes.title}</h5>
-                        <div className='space-y-2 text-gray-400 cursor-default'>
+                        <div className='space-x-4 text-gray-400 cursor-default flex items-center'>
                             <div><Calendar width={16} height={16} className='inline mr-2'/>{data.project.data.attributes.year}</div>
-                            <div><Focus width={16} height={16} className='inline mr-2'/>{data.project.data.attributes.lens}</div>
+                            <div><Focus width={16} height={16} className='inline mr-2'/>{data.project.data.project_details?.format}</div>
                         </div>
-                        <div className="prose prose-invert bloc">
+                        <div className="prose prose-lg prose-invert bloc">
                             <BlocksRenderer content={[ ...data.project.data.attributes.description ]}/>
                         </div>
                     </div>
+                    {data.project.data.attributes?.project_details && (
+                        <div className="my-5">
+                            <dl>
+                                <dt>Director</dt>
+                                <dd>{data.project.data.attributes.project_details.director}</dd>
+                                <dt>Writer</dt>
+                                <dd>{data.project.data.attributes.project_details.writer}</dd>
+                                <dt>Producer</dt>
+                                <dd>{data.project.data.attributes.project_details.producer}</dd>
+                                <dt>DoP</dt>
+                                <dd>{data.project.data.attributes.project_details.dop}</dd>
+                                <dt>Editor</dt>
+                                <dd>{data.project.data.attributes.project_details.editor}</dd>
+                                <dt>Score</dt>
+                                <dd>{data.project.data.attributes.project_details.score}</dd>
+                                <dt>Starring</dt>
+                                <dd>{data.project.data.attributes.project_details.starring}</dd>
+                                <dt>Format</dt>
+                                <dd>{data.project.data.attributes.project_details.format}</dd>
+                            </dl>
+                        </div>
+                    )}
                     {data.project.data.attributes.addAwards && (
                         <div className='p-3 mb-10 grid gap-5 lg:grid-cols-3 grid-cols-1 sm:grid-cols-2'>
                             {data.project.data.attributes.addAwards.map((award) => (
                                 <div key={award.id} className='p-5 bg-zinc-900 space-y-2'>
-                                    <img src={`http://localhost:1337${award.Logo.data.attributes.url}`} alt={award.Logo.data.attributes.title} className='mb-5' />
+                                    <img src={`${apiPath}${award.Logo.data.attributes.url}`} alt={award.Logo.data.attributes.title} className='mb-5' />
                                     <p>{award.Title}</p>
                                     <p className='text-xs'>{award.year}</p>
                                     <p className='text-xs text-gray-300'>{award.description}</p>
@@ -144,11 +176,11 @@ const Project = () => {
                         {data.project.data.attributes.gallery.data.map((image)=>(
                             <Zoom classDialog="custom-zoom" key={image.id}>
                                 <picture className='flex justify-end'>
-                                    <source media='(max-width: 1920px)' srcSet={`http://localhost:1337${image.attributes.formats.large.url}`}/>
-                                    <source media='(max-width: 720px)' srcSet={`http://localhost:1337${image.attributes.formats.medium.url}`}/>
+                                    <source media='(max-width: 1920px)' srcSet={`${apiPath}${image.attributes.formats.large.url}`}/>
+                                    <source media='(max-width: 720px)' srcSet={`${apiPath}${image.attributes.formats.medium.url}`}/>
                                     <img
                                         alt=""
-                                        src={`http://localhost:1337${image.attributes.url}`}
+                                        src={`${apiPath}${image.attributes.url}`}
                                     />
                                 </picture>
                             </Zoom>
@@ -158,7 +190,7 @@ const Project = () => {
             </section>
             <section className='bg-neutral-300 text-black flex'>
                 <div className="my-auto">
-                    <h6 className='mb-5'>More Projects <ChevronDown className='inline' size={24}/></h6>
+                    <h6 className='mb-5 font-spectral'>More Projects <ChevronDown className='inline' size={24}/></h6>
                     <div className="flex flex-col justify-center items-start space-y-5">
                         {data.projects.data.map((single_project) => (
                             <h3 className='hover:underline' key={single_project.id}>

@@ -4,6 +4,7 @@ import React, { useRef } from 'react'
 import { BlocksRenderer } from '@strapi/blocks-react-renderer'
 import WaitScreen from '../components/WaitScreen'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import apiPath from '../apiPath'
 
 const GETABOUT = gql`
     query GetAboutAndTeams {
@@ -54,7 +55,7 @@ const About = () => {
     
     if (loading) return <WaitScreen loading={loading}/>
     if (error) return <WaitScreen error={error}/>
-    const backgroundImage = `http://localhost:1337${data.about.data.attributes.Background.data.attributes.formats.large.url}`
+    const backgroundImage = `${apiPath}${data.about.data.attributes.Background.data.attributes.formats.large.url}`
 
     return (
     <>
@@ -90,37 +91,15 @@ const About = () => {
         <section className="py-40">
             <div className="max-w-screen-2xl mx-auto">
                 <div className="lg:w-2/3 xl:w-1/2 static mb-40">
-                    <div className="mb-10 prose prose-invert">
+                    <div className="mb-10 prose prose:lg prose-invert">
                         <BlocksRenderer content={[ ...data.about.data.attributes.Description ]} />
                     </div>
                 </div>
-                {/* <div className="flex flex-wrap">
-                    {data.teams.data.map((team) => (
-                        <motion.div
-                            key={team.id}
-                            className='h-[600px] md:h-[500px] lg:h-[400px] xl:h-[800px] overflow-hidden relative group lg:w-1/4 md:w-1/2 w-full'
-                            // style={{ width: '25%' }}
-                            whileHover={{ width: '70%'}}
-                        >
-                            <img src={`http://localhost:1337${team.attributes.image.data.attributes.formats.small.url}`} alt="" className='object-cover w-full h-full grayscale' />
-                            <div className="absolute inset-0 bg-black/50 group-hover:opacity-100 opacity-0 ease-out duration-700"></div>
-                            <div className="absolute bottom-0 left-0 m-10">
-                                <h6 className='mb-5 transition-all translate-y-10 group-hover:translate-y-0 group-hover:opacity-100 opacity-0 duration-600'>{team.attributes.fullname}</h6>
-                                <p className='mb-5 transition-all translate-y-10 group-hover:translate-y-0 group-hover:opacity-100 opacity-0 duration-500'>{team.attributes.bio}</p>
-                                <div className="flex items-center space-x-2 transition-all translate-y-10 group-hover:translate-y-0 group-hover:opacity-100 opacity-0 duration-300">
-                                    <a href="" className='p-2'><Facebook/></a>
-                                    <a href="" className='p-2'><Instagram/></a>
-                                    <a href="" className='p-2'><Twitter/></a>
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div> */}
-                <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-0">
+                <div className="grid md:grid-cols-2 grid-cols-1 gap-0">
                     {data.teams.data.map((team) => (
                         <div key={team.id} className='h-[600px] md:h-[500px] lg:h-[400px] xl:h-[800px] overflow-hidden relative group'>
-                            <img src={`http://localhost:1337${team.attributes.image.data.attributes.formats.small.url}`} alt="" className='object-cover w-full h-full grayscale' />
-                            <div className="absolute inset-0 bg-black group-hover:translate-x-0 -translate-x-full transition-transform ease-out duration-700"></div>
+                            <img src={`${apiPath}${team.attributes.image.data.attributes.formats.small.url}`} alt="" className='object-cover w-full h-full grayscale' />
+                            <div className="absolute inset-0 bg-black group-hover:opacity-100 opacity-0 transition-opacity ease-out duration-700"></div>
                             <div className="absolute bottom-0 left-0 m-10">
                                 <h6 className='mb-5 transition-all translate-y-10 group-hover:translate-y-0 group-hover:opacity-100 opacity-0 duration-600'>{team.attributes.fullname}</h6>
                                 <p className='mb-5 transition-all translate-y-10 group-hover:translate-y-0 group-hover:opacity-100 opacity-0 duration-500'>{team.attributes.bio}</p>
@@ -133,29 +112,6 @@ const About = () => {
                         </div>
                     ))}
                 </div>
-                {/* <div className="grid grid-cols-3 gap-0">
-                    <div>
-                        <h2 className='mb-5'>Meet the Team</h2>
-                    </div>
-                    <div className="col-span-2">
-                        {data.teams.data.map((team) => (
-                            <div key={team.id} className='flex flex-row items-center mb-20'>
-                                <div className='shrink-0 mr-10'>
-                                    <img src={`http://localhost:1337${team.attributes.image.data.attributes.formats.small.url}`} alt="" className='max-w-[520px]'/>
-                                </div>
-                                <div className="">
-                                    <h3 className='mb-5 capitalize font-normal'>{team.attributes.fullname}</h3>
-                                    <p className='mb-5'>{team.attributes.bio}</p>
-                                    <div className="flex items-center space-x-2">
-                                        <a href="" className='p-2'><Facebook/></a>
-                                        <a href="" className='p-2'><Instagram/></a>
-                                        <a href="" className='p-2'><Twitter/></a>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div> */}
             </div>
         </section>
     </>

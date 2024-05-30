@@ -15,7 +15,8 @@ export default {
       }
     },
     fontFamily: {
-      'poppins' : ['Poppins', 'sans-serif']
+      'karla' : ['Karla', 'sans-serif'],
+      'spectral' : ['Spectral', 'serif']
     }
   },
   plugins: [
