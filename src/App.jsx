@@ -12,7 +12,7 @@ import { AnimatePresence } from 'framer-motion'
 import apiPath from "./apiPath"
 
 const client = new ApolloClient({
-  uri: apiPath,
+  uri: `${apiPath}/graphql`,
   cache: new InMemoryCache(),
 })
 
