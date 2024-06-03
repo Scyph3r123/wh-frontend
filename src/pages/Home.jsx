@@ -52,12 +52,12 @@ const GETHOMEPAGE = gql`
   }
 `
 
-const Home = () => {
+const Home = (client) => {
   const { loading, error, data } = useQuery(GETHOMEPAGE)
   
   if (loading) return <WaitScreen loading={loading}/>
   if (error) return <WaitScreen error={error}/>
-  const backgroundImage = `${apiPath}${data.homepage.data.attributes.background.data.attributes.formats.large.url}`
+  const backgroundImage = `${client.uri}${data.homepage.data.attributes.background.data.attributes.formats.large.url}`
   
   return (
     <>

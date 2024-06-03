@@ -8,11 +8,11 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 import Project from "./pages/Project"
 import Footer from "./components/Footer"
 import { useEffect } from "react"
-import { AnimatePresence, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 import apiPath from "./apiPath"
 
 const client = new ApolloClient({
-  uri: `${apiPath}/graphql`,
+  uri: apiPath,
   cache: new InMemoryCache(),
 })
 
@@ -35,7 +35,6 @@ function App() {
     <AnimatePresence mode="wait">
       <ApolloProvider client={client}>
         <ScrollToTop/>
-        {apiPath}
         <Header/>
         <Routes>
           <Route path='/' element={<Home/>} />
