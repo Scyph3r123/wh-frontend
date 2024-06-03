@@ -98,7 +98,7 @@ const About = () => {
                 <div className="grid md:grid-cols-2 grid-cols-1 gap-0">
                     {data.teams.data.map((team) => (
                         <div key={team.id} className='h-[600px] md:h-[500px] lg:h-[400px] xl:h-[800px] overflow-hidden relative group'>
-                            <img src={`${apiPath}${team.attributes.image.data.attributes.formats.small.url}`} alt="" className='object-cover w-full h-full grayscale' />
+                            <img src={`${apiPath}${team.attributes.image.data.attributes.formats.medium.url}`} alt="" className='object-cover w-full h-full grayscale' />
                             <div className="absolute inset-0 bg-black group-hover:opacity-100 opacity-0 transition-opacity ease-out duration-700"></div>
                             <div className="absolute bottom-0 left-0 m-10">
                                 <h6 className='mb-5 transition-all translate-y-10 group-hover:translate-y-0 group-hover:opacity-100 opacity-0 duration-600'>{team.attributes.fullname}</h6>
