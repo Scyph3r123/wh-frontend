@@ -26,6 +26,7 @@ const GETPROJECT = gql`
                     editor
                     score
                     writer
+                    url
                     addAwards {
                         id
                         Title
@@ -40,7 +41,6 @@ const GETPROJECT = gql`
                             }
                         }
                     }
-
                     featured_image {
                         data {
                             attributes {

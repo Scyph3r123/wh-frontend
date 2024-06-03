@@ -109,8 +109,8 @@ const Projects = () => {
                                 <img src={`${apiPath}${project.attributes.featured_image.data.attributes.formats.medium.url}`} alt="Project image" className='scale-100 group-hover:scale-125 transition-transform object-cover w-full h-full duration-1000' />
                                 <div className="absolute top-0 inset-x-0 m-5 md:m-10">
                                     <div className="flex justify-between uppercase font-medium">
-                                        <h4>{project.attributes.title}</h4>
-                                        <ArrowRight size={30}/>
+                                        <div className='text-2xl'>{project.attributes.title}</div>
+                                        <ArrowRight size={24} className='group-hover:opacity-100 opacity-0 transition-opacity'/>
                                         {/* <p><Focus className='inline' size={18}/> {project.attributes.lens}</p> */}
                                     </div>
                                 </div>
